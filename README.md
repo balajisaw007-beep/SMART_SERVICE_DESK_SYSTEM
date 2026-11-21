@@ -318,15 +318,6 @@ git push -u origin main
 git push origin development
 ```
 
-## Viva and Evaluation Notes
-
-- `ServiceRequest` belongs in the domain layer because it represents the core support-request data and owns priority validation and resolution behavior.
-- `OPEN` changes to `RESOLVED` inside `ServiceRequest.resolve()`.
-- JSON handling is outside `ServiceRequest`; `FileRepository` reads and writes data, keeping file technology out of the domain model.
-- `RequestService` implements application use cases and coordinates domain objects with persistence.
-- `DuplicateRequestIdError`, `RequestNotFoundError`, `InvalidPriorityError`, `InvalidRequestDataError`, and `RequestResolutionUnauthorizedError` are custom exceptions.
-- The creator-only rule is an extra feature based on real-life ownership and is not a replacement for the assignment's base requirements.
-
 ## Submission Details
 
 ```text
