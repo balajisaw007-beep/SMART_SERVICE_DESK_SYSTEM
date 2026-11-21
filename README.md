@@ -1,10 +1,15 @@
-# Smart Service Desk Management System
+# 🖥️ Smart Service Desk Management System
 
-A reduced-scope Python command-line application for creating, viewing, searching, and resolving IT support requests. All request data is saved to JSON so it remains available after the application is closed and restarted.
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
+![Data](https://img.shields.io/badge/Storage-JSON-green)
+![Testing](https://img.shields.io/badge/Tests-unittest-orange)
+![Git](https://img.shields.io/badge/Git-main%20%7C%20development-red?logo=git&logoColor=white)
 
-## Implemented Features
+> A structured Python command-line application for creating, viewing, searching, resolving, and persistently storing IT support requests.
 
-### Required features
+## 🚀 Implemented Features
+
+### ✅ Required Features
 
 - Create a service request with a unique Request ID
 - Automatically assign the `OPEN` status to a new request
@@ -17,16 +22,18 @@ A reduced-scope Python command-line application for creating, viewing, searching
 - Safely load missing or empty JSON data
 - Handle duplicate IDs, missing requests, invalid priorities, invalid fields, and invalid menu choices with friendly messages
 
-### Extra real-life feature
+> [!IMPORTANT]
+> ### ⭐ Extra Feature: Creator-Only Resolution
+>
+> **Real-life authorization is built into the resolution workflow:** only the employee who created a request can resolve it.
+>
+> - Resolution requires the Request ID and creator's Employee Name.
+> - Names are checked case-insensitively and surrounding spaces are ignored.
+> - A mismatched name raises `RequestResolutionUnauthorizedError`.
+> - An unauthorized attempt leaves the request `OPEN`.
+> - Request IDs are also searched case-insensitively.
 
-- Only the employee who created a request can resolve it
-- Resolution asks for the Employee Name as an ownership check
-- A mismatched name raises `RequestResolutionUnauthorizedError`
-- An unauthorized attempt leaves the request `OPEN`
-- Employee-name matching is case-insensitive and ignores surrounding spaces
-- Request IDs are searched case-insensitively
-
-## Technology and Concepts
+## 🧰 Technology and Concepts
 
 - Python 3
 - Object-oriented programming
@@ -38,7 +45,7 @@ A reduced-scope Python command-line application for creating, viewing, searching
 - Unit testing with `unittest`
 - Git branch-and-merge workflow
 
-## Project Structure
+## 📁 Project Structure
 
 ```text
 project/
@@ -60,7 +67,7 @@ project/
 `-- .gitignore
 ```
 
-## Responsibility of Each Layer
+## 🏗️ Responsibility of Each Layer
 
 - `domain/` contains the `ServiceRequest` model, priority validation, resolve behavior, and domain exceptions.
 - `application/` contains the create, view, search, and resolve use cases in `RequestService`.
@@ -70,7 +77,7 @@ project/
 
 The domain model does not open or update JSON files. JSON and file-system responsibilities belong to the infrastructure layer.
 
-## Prerequisites
+## 📋 Prerequisites
 
 - Python 3.10 or newer
 - Git
@@ -83,7 +90,7 @@ python --version
 git --version
 ```
 
-## Setup
+## ⚙️ Setup
 
 Open the project directory:
 
@@ -108,7 +115,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 .\.venv\Scripts\Activate.ps1
 ```
 
-## Run the Application
+## ▶️ Run the Application
 
 Without a virtual environment:
 
@@ -134,7 +141,7 @@ SMART SERVICE DESK SYSTEM
 Enter your choice:
 ```
 
-## Input Formats
+## ✍️ Input Formats
 
 ### Create Service Request
 
@@ -194,7 +201,7 @@ Enter only the Request ID. An existing request shows all of its details. An unkn
 Error: Request not found
 ```
 
-### Resolve Request
+### 🔒 Resolve Request
 
 Enter the Request ID and the same Employee Name used when creating it:
 
@@ -215,7 +222,7 @@ Using another Employee Name shows:
 Error: Only the employee who created this request can resolve it.
 ```
 
-## Mandatory Evaluation Demonstration
+## 🎯 Mandatory Evaluation Demonstration
 
 1. Run `python main.py`.
 2. Choose `1` and create `SR101`:
@@ -238,7 +245,7 @@ Error: Only the employee who created this request can resolve it.
 11. Choose `3` and search for `SR101`.
 12. Confirm that the saved status is `RESOLVED`.
 
-## Persistence Check
+## 💾 Persistence Check
 
 The service requests are stored in `data/requests.json`. To manually inspect the saved data:
 
@@ -248,7 +255,7 @@ Get-Content data\requests.json
 
 The application also automatically creates `data/` if it is missing and handles an empty JSON file as an empty request list.
 
-## Run Tests
+## 🧪 Run Tests
 
 Run all automated tests:
 
@@ -270,7 +277,7 @@ python -m compileall -q domain application infrastructure main.py test_smart_ser
 
 The tests cover duplicate IDs, invalid priorities, not-found searches, creator-only resolution, repeated resolution, and persistence after repository reload.
 
-## Git Workflow
+## 🌿 Git Workflow
 
 The repository uses two branches:
 
@@ -318,7 +325,16 @@ git push -u origin main
 git push origin development
 ```
 
-## Submission Details
+## 🎓 Viva and Evaluation Notes
+
+- `ServiceRequest` belongs in the domain layer because it represents the core support-request data and owns priority validation and resolution behavior.
+- `OPEN` changes to `RESOLVED` inside `ServiceRequest.resolve()`.
+- JSON handling is outside `ServiceRequest`; `FileRepository` reads and writes data, keeping file technology out of the domain model.
+- `RequestService` implements application use cases and coordinates domain objects with persistence.
+- `DuplicateRequestIdError`, `RequestNotFoundError`, `InvalidPriorityError`, `InvalidRequestDataError`, and `RequestResolutionUnauthorizedError` are custom exceptions.
+- The creator-only rule is an extra feature based on real-life ownership and is not a replacement for the assignment's base requirements.
+
+## 📤 Submission Details
 
 ```text
 Name:
