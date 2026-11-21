@@ -5,5 +5,26 @@
     "issue": "Laptop is not starting",
     "priority": "HIGH",
     "status": "RESOLVED"
+  },
+  {
+    "request_id": "1",
+    "employee_name": "Balaji",
+    "issue": "Laptop isssue",
+    "priority": "LOW",
+    "status": "OPEN"
+  },
+  {
+    "request_id": "11234",
+    "employee_name": "Ram",
+    "issue": "PC issue",
+    "priority": "HIGH",
+    "status": "RESOLVED"
+  },
+  {
+    "request_id": "SR104",
+    "employee_name": "Asha",
+    "issue": "Printer issue",
+    "priority": "MEDIUM",
+    "status": "RESOLVED"
   }
 ]
