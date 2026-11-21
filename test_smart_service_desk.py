@@ -7,6 +7,7 @@ from domain.exceptions import (
     DuplicateRequestIdError,
     InvalidPriorityError,
     RequestNotFoundError,
+    RequestResolutionUnauthorizedError,
 )
 from domain.service_request import ServiceRequest
 from infrastructure.file_repository import FileRepository
@@ -28,8 +29,16 @@ class ServiceDeskTests(unittest.TestCase):
         with self.assertRaises(DuplicateRequestIdError):
             self.service.create_request("SR101", "Rahul", "Duplicate", "LOW")
 
-        self.assertTrue(self.service.resolve_request("SR101"))
-        self.assertFalse(self.service.resolve_request("SR101"))
+        self.assertTrue(self.service.resolve_request("SR101", "Rahul"))
+        self.assertFalse(self.service.resolve_request("SR101", "Rahul"))
+        with self.assertRaises(RequestResolutionUnauthorizedError):
+            self.service.resolve_request("SR101", "Priya")
+
+    def test_only_creator_can_resolve(self):
+        self.service.create_request("SR103", "Asha", "Printer issue", "MEDIUM")
+        with self.assertRaises(RequestResolutionUnauthorizedError):
+            self.service.resolve_request("SR103", "Ram")
+        self.assertEqual(self.service.search_request("SR103").status, "OPEN")
 
     def test_search_not_found(self):
         with self.assertRaises(RequestNotFoundError):
@@ -41,7 +50,7 @@ class ServiceDeskTests(unittest.TestCase):
 
     def test_data_persists_after_repository_reload(self):
         self.service.create_request("SR101", "Rahul", "Laptop is not starting", "HIGH")
-        self.service.resolve_request("SR101")
+        self.service.resolve_request("SR101", "Rahul")
 
         reloaded = RequestService(FileRepository(self.file_path))
         request = reloaded.search_request("SR101")

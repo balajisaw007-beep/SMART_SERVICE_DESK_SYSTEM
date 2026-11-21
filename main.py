@@ -4,6 +4,7 @@ from domain.exceptions import (
     InvalidPriorityError,
     InvalidRequestDataError,
     RequestNotFoundError,
+    RequestResolutionUnauthorizedError,
 )
 from infrastructure.file_repository import FileRepository
 
@@ -25,10 +26,12 @@ def read_required(prompt):
 
 
 def create_request(service):
-    request_id = read_required("Enter Request ID: ")
-    employee_name = read_required("Enter Employee Name: ")
-    issue = read_required("Enter Issue: ")
-    priority = read_required("Enter Priority: ")
+    print("Request format: Request ID, Employee Name, Issue Description, Priority")
+    print("Priority format: LOW, MEDIUM, or HIGH")
+    request_id = read_required("Enter Request ID (example: SR101): ")
+    employee_name = read_required("Enter Employee Name (example: Rahul): ")
+    issue = read_required("Enter Issue (example: Laptop is not starting): ")
+    priority = read_required("Enter Priority (LOW, MEDIUM, or HIGH): ")
     request = service.create_request(request_id, employee_name, issue, priority)
     print("Service Request created successfully.")
     print(request)
@@ -51,7 +54,8 @@ def search_request(service):
 
 def resolve_request(service):
     request_id = read_required("Enter Request ID: ")
-    resolved = service.resolve_request(request_id)
+    employee_name = read_required("Enter your Employee Name to confirm ownership: ")
+    resolved = service.resolve_request(request_id, employee_name)
     if resolved:
         print("Service Request resolved successfully.")
     else:
@@ -86,6 +90,7 @@ def main():
             RequestNotFoundError,
             InvalidPriorityError,
             InvalidRequestDataError,
+            RequestResolutionUnauthorizedError,
         ) as exc:
             print(f"Error: {exc}")
 

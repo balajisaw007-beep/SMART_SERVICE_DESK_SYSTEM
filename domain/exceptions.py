@@ -12,3 +12,7 @@ class InvalidPriorityError(Exception):
 
 class InvalidRequestDataError(Exception):
     """Raised when required request data is blank or invalid."""
+
+
+class RequestResolutionUnauthorizedError(Exception):
+    """Raised when someone other than the creator tries to resolve a request."""

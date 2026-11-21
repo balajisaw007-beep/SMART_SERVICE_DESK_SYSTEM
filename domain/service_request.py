@@ -1,4 +1,8 @@
-from domain.exceptions import InvalidPriorityError, InvalidRequestDataError
+from domain.exceptions import (
+    InvalidPriorityError,
+    InvalidRequestDataError,
+    RequestResolutionUnauthorizedError,
+)
 
 
 class ServiceRequest:
@@ -26,7 +30,11 @@ class ServiceRequest:
         self.priority = normalized_priority
         self.status = normalized_status
 
-    def resolve(self):
+    def resolve(self, employee_name):
+        if str(employee_name).strip().lower() != self.employee_name.lower():
+            raise RequestResolutionUnauthorizedError(
+                "Only the employee who created this request can resolve it."
+            )
         if self.status == "RESOLVED":
             return False
         self.status = "RESOLVED"
