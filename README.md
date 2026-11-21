@@ -10,6 +10,7 @@ A Python CLI application for creating, viewing, searching, and resolving employe
 - Search by Request ID
 - Resolve an open request
 - Prevent a second resolution of an already resolved request
+- Allow resolution only by the employee who created the request; a mismatched Employee Name raises `RequestResolutionUnauthorizedError`
 - Validate priorities as `LOW`, `MEDIUM`, or `HIGH`
 - Persist requests in `data/requests.json`
 - Safely handle missing or empty JSON data
@@ -66,10 +67,13 @@ python -m unittest -v
 2. Choose `1` again and attempt to create `SR101` to demonstrate duplicate handling.
 3. Choose `2` to view all requests.
 4. Choose `3` and search for `SR101`.
-5. Choose `4` and resolve `SR101`.
-6. Choose `4` again and confirm it is already resolved.
-7. Choose `5` to exit.
-8. Restart with `python main.py` and search for `SR101` to show that `RESOLVED` was persisted.
+5. Choose `4`, enter `Rahul` as the creator/owner name, and resolve `SR101`.
+6. Choose `4` with the wrong Employee Name to demonstrate creator-only resolution.
+7. Choose `4` again with `Rahul` and confirm the request is already resolved.
+8. Choose `5` to exit.
+9. Restart with `python main.py` and search for `SR101` to show that `RESOLVED` was persisted.
+
+Resolution rule: the Employee Name used during resolution must match the Employee Name used when the request was created. This models real-life ownership and prevents an unauthorized employee from resolving another employee's request.
 
 ## Git Workflow
 

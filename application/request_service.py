@@ -33,9 +33,9 @@ class RequestService:
             raise RequestNotFoundError("Request not found")
         return None
 
-    def resolve_request(self, request_id):
+    def resolve_request(self, request_id, employee_name):
         request = self.search_request(request_id)
-        if not request.resolve():
-            return False
-        self.repository.save(self.requests)
-        return True
+        resolved = request.resolve(employee_name)
+        if resolved:
+            self.repository.save(self.requests)
+        return resolved
